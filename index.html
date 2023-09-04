@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blynk controller</title>
+    <style>
+        .btn1 {
+            padding: 10px 20px 10px 20px;
+            background-color: rgb(12, 180, 12);
+            border-radius: 6px;
+            margin-left: 45%;
+            margin-right: 20px;
+
+        }
+        .btn1:hover{
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .btn2 {
+            padding: 10px 20px 10px 20px;
+            background-color: rgb(238, 38, 38);
+            border-radius: 6px;
+        }
+        .btn2:hover{
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .btn-holder{
+            padding-top: 50vh;
+        }
+        .display{
+            height: 20px;
+            width: 20px;
+            margin: 100px 0px 0px 100px;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="display" id="display">
+       
+    </div>
+    <div class="btn-holder">
+        <button class="btn1" onclick="LED_ON();">ON</button>
+        <button class="btn2" onclick="LED_OFF();">OFF</button>
+    </div>
+</body>
+<!-- https://blr1.blynk.cloud/external/api/isHardwareConnected?token=uRv-jwo6UZ7xnTAL-49ICt0q-nfCWzQH -->
+<script>
+    function LED_ON() {
+        fetch('https://blr1.blynk.cloud/external/api/update?token=uRv-jwo6UZ7xnTAL-49ICt0q-nfCWzQH&v0=1')
+            .then(response => {
+                if (response.ok) {
+                    return "ON"; // Parse the response data as JSON
+                } else {
+                    throw new Error('API request failed');
+                }
+            })
+            .then(data => {
+                // Process the response data here
+                console.log(data); // Example: Logging the data to the console
+            })
+            .catch(error => {
+                // Handle any errors here
+                console.error(error); // Example: Logging the error to the console
+            });
+            BLYNK_DATA();
+    }
+
+    function LED_OFF() {
+        fetch('https://blr1.blynk.cloud/external/api/update?token=uRv-jwo6UZ7xnTAL-49ICt0q-nfCWzQH&v0=0')
+            .then(response => {
+                if (response.ok) {
+                    return "OFF"; // Parse the response data as JSON
+                } else {
+                    throw new Error('API request failed');
+                }
+            })
+            .then(data => {
+                // Process the response data here
+                console.log(data); // Example: Logging the data to the console
+            })
+            .catch(error => {
+                // Handle any errors here
+                console.error(error); // Example: Logging the error to the console
+            });
+            BLYNK_DATA();
+    }
+
+    function BLYNK_DATA() {
+        fetch('https://blr1.blynk.cloud/external/api/get?token=uRv-jwo6UZ7xnTAL-49ICt0q-nfCWzQH&v0')
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Parse the response data as JSON
+                } else {
+                    throw new Error('API request failed');
+                }
+            })
+            .then(data => {
+                // Process the response data here
+                console.log(data); // Example: Logging the data to the console
+                if(data){
+                    document.getElementById("display").innerHTML = "<i class='fa-solid fa-lightbulb fa-2xl'></i>";
+
+                }
+                else{
+                    document.getElementById("display").innerHTML = "<i class='fa-regular fa-lightbulb fa-2xl'></i>";
+
+                }
+            })
+            .catch(error => {
+                // Handle any errors here
+                console.error(error); // Example: Logging the error to the console
+            });
+
+            
+    }
+
+    BLYNK_DATA();
+
+</script>
+<script src="https://kit.fontawesome.com/62b94e81b1.js" crossorigin="anonymous"></script>
+</html>
